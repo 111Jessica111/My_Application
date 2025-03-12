@@ -34,9 +34,9 @@ public class ShopCarListAdapter extends RecyclerView.Adapter<ShopCarListAdapter.
         return new MyHolder(view);
     }
 
-    @SuppressLint("RecyclerView")
+
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyHolder holder, @SuppressLint("RecyclerView") int position) {
         //绑定
         Shopcarinfo shopcarinfo = shopcarinfos.get(position);
         holder.product_image.setImageResource(shopcarinfo.getProduct_image());

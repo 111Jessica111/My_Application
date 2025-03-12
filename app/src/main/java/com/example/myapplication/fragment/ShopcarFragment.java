@@ -1,5 +1,8 @@
 package com.example.myapplication.fragment;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -11,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.LeftListAdapter;
@@ -64,6 +68,9 @@ public class ShopcarFragment extends Fragment {
             @Override
             public void onSubtractOnClick(Shopcarinfo shopcarinfo, int position) {
                 ShopcarDbHelper.getInstance(getActivity()).subtract(shopcarinfo.getShop_id(),shopcarinfo);
+                if (shopcarinfo.getProduct_count() == 1){
+                    showWarningDialog(shopcarinfo,shopcarinfo.getShop_id());
+                }
                 refreshShopCar();
             }
         });
@@ -106,5 +113,31 @@ public class ShopcarFragment extends Fragment {
             sum = sum + money;
         }
         tv_money_sum.setText(sum+"");
+    }
+
+    // 显示警告对话框
+    private void showWarningDialog(Shopcarinfo shopcarinfo,int shop_id) {
+        new AlertDialog.Builder(getActivity()) // context 是你的活动上下文
+                .setTitle("Attention！")
+                .setIcon(R.mipmap.cry)
+                .setMessage("不要再点啦，就剩这一个啦！")
+                .setPositiveButton("放你一马", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getActivity(),"感谢您的大恩大德",Toast.LENGTH_SHORT).show();
+                        refreshShopCar();
+                    }
+                })
+                .setNegativeButton("狠心移除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 调用删除方法
+                        ShopcarDbHelper.getInstance(getActivity()).delete(shop_id+"");
+                        Toast.makeText(getActivity(), "商品已移除~", Toast.LENGTH_SHORT).show();
+                        refreshShopCar();
+                    }
+                })
+                .show();
+
     }
 }

@@ -3,6 +3,7 @@ package com.example.myapplication.db;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -77,7 +78,7 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
             String nullColumHack = "value(null,?,?,?,?,?,?,?,?)";
             //执行
             int insert = (int) db.insert("shopcar_table", nullColumHack, values);
-            db.close();
+            //db.close();
             return insert;
         }else {
             //如果已经添加过了，就直接数量加一
@@ -93,7 +94,7 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
         //添加后数量加一
         values.put("product_count",shopcarinfo.getProduct_count()+1);
         int update = db.update("shopcar_table",values,"_id=?",new String[]{shop_id+""});
-        db.close();
+        //db.close();
         return update;
     }
 
@@ -104,30 +105,22 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         if (shopcarinfo.getProduct_count() > 1){
-
             //添加后数量减一
             values.put("product_count",shopcarinfo.getProduct_count()-1);
             int update = db.update("shopcar_table",values,"_id=?",new String[]{shop_id+""});
-            db.close();
+            //db.close();
             return update;
-        }else if (shopcarinfo.getProduct_count() == 1) {
-            // 弹出提示框
-            showWarningDialog();
-            db.close();
-            return 0; // 不执行更新
         }
-        db.close();
+        //db.close();
         return 0;
     }
 
-    // 显示警告对话框
-    private void showWarningDialog() {
-        new AlertDialog.Builder(context) // context 是你的活动上下文
-                .setTitle("Attention！")
-                .setIcon(R.mipmap.cry)
-                .setMessage("不要再点啦，都要见底啦！")
-                .setPositiveButton("确定", null)
-                .show();
+    //删除
+    public int delete(String shop_id){
+        SQLiteDatabase db = getWritableDatabase();
+        int delete = db.delete("shopcar_table","_id=?",new String[]{shop_id});
+        //db.close();
+        return delete;
     }
 
     //数量修改
@@ -166,7 +159,7 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
                 cursor.close();  // 确保 cursor 被关闭
             }
             if (db != null) {
-                db.close();  // 确保数据库被关闭
+               // db.close();  // 确保数据库被关闭
             }
         }
         return shopinfo;
@@ -207,7 +200,7 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
                 cursor.close();  // 确保 cursor 被关闭
             }
             if (db != null) {
-               db.close();  // 确保数据库被关闭
+               //db.close();  // 确保数据库被关闭
             }
         }
         return list;
