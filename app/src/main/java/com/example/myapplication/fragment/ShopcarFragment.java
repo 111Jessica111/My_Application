@@ -37,6 +37,7 @@ public class ShopcarFragment extends Fragment {
         // 设置布局管理器
         recycle_shop.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        //初始化
         shopCarListAdapter = new ShopCarListAdapter();
         recycle_shop.setAdapter(shopCarListAdapter);
 
@@ -47,11 +48,27 @@ public class ShopcarFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //加减点击事件
+        shopCarListAdapter.setMonItemClickListener(new ShopCarListAdapter.onItemClickListener() {
+            @Override
+            public void onAddOnClick(Shopcarinfo shopcarinfo, int position) {
+                ShopcarDbHelper.getInstance(getActivity()).add(shopcarinfo.getShop_id(),shopcarinfo);
+                refreshShopCar();
+            }
+
+            @Override
+            public void onSubtractOnClick(Shopcarinfo shopcarinfo, int position) {
+                ShopcarDbHelper.getInstance(getActivity()).subtract(shopcarinfo.getShop_id(),shopcarinfo);
+                refreshShopCar();
+            }
+        });
+
+
         // 获取数据并显示
         refreshShopCar();
     }
 
-    // 每次返回到这个Fragment时刷新数据(很重要！！！！！！！！！)
+    // 每次返回到这个Fragment时刷新数据(很重要！！！！！！！！！,把我害惨了 :( )
     @Override
     public void onResume() {
         super.onResume();

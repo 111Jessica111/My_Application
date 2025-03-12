@@ -81,6 +81,7 @@
                         android:src="@drawable/baseline_currency_yen_24"/>
 
                     <TextView
+                        android:id="@+id/tv_money_sum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="111"
@@ -91,6 +92,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <TextView
+                    android:id="@+id/tv_sum"
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

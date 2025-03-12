@@ -1,16 +1,20 @@
 package com.example.myapplication.db;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.myapplication.R;
 import com.example.myapplication.entity.DataProvider;
 import com.example.myapplication.entity.Shopcarinfo;
+import com.example.myapplication.fragment.ShopcarFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +23,11 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
     private static ShopcarDbHelper shopcarDbHelper;
     private static final String DB_name = "shopcar.db";
     private static final int Version = 1;
+    private Context context;
 
     public ShopcarDbHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+        this.context = context;
     }
     //单例
     public synchronized static ShopcarDbHelper getInstance(Context context) {
@@ -74,20 +80,54 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
             db.close();
             return insert;
         }else {
-            return  update(addshop.getShop_id(),addshop);
+            //如果已经添加过了，就直接数量加一
+            return  add(addshop.getShop_id(),addshop);
         }
     }
 
-    //购物车修改
-    public int update(int shop_id, Shopcarinfo shopcarinfo){
+    //购物车数量增加
+    public int add(int shop_id, Shopcarinfo shopcarinfo){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("_id",shop_id);
+
         //添加后数量加一
         values.put("product_count",shopcarinfo.getProduct_count()+1);
         int update = db.update("shopcar_table",values,"_id=?",new String[]{shop_id+""});
         db.close();
         return update;
+    }
+
+
+    //购物车数量减少
+    public int subtract(int shop_id, Shopcarinfo shopcarinfo){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if (shopcarinfo.getProduct_count() > 1){
+
+            //添加后数量减一
+            values.put("product_count",shopcarinfo.getProduct_count()-1);
+            int update = db.update("shopcar_table",values,"_id=?",new String[]{shop_id+""});
+            db.close();
+            return update;
+        }else if (shopcarinfo.getProduct_count() == 1) {
+            // 弹出提示框
+            showWarningDialog();
+            db.close();
+            return 0; // 不执行更新
+        }
+        db.close();
+        return 0;
+    }
+
+    // 显示警告对话框
+    private void showWarningDialog() {
+        new AlertDialog.Builder(context) // context 是你的活动上下文
+                .setTitle("Attention！")
+                .setIcon(R.mipmap.cry)
+                .setMessage("不要再点啦，都要见底啦！")
+                .setPositiveButton("确定", null)
+                .show();
     }
 
     //数量修改
@@ -131,6 +171,8 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
         }
         return shopinfo;
     }
+
+
 
     //根据用户名查询购物车
     public List<Shopcarinfo> shoplist(String username){
