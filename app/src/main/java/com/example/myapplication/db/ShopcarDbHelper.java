@@ -1,21 +1,14 @@
 package com.example.myapplication.db;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.view.LayoutInflater;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.example.myapplication.R;
-import com.example.myapplication.entity.DataProvider;
 import com.example.myapplication.entity.Shopcarinfo;
-import com.example.myapplication.fragment.ShopcarFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +17,7 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
     private static ShopcarDbHelper shopcarDbHelper;
     private static final String DB_name = "shopcar.db";
     private static final int Version = 1;
-    private Context context;
+    private static Context context;
 
     public ShopcarDbHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -78,7 +71,7 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
             String nullColumHack = "value(null,?,?,?,?,?,?,?,?)";
             //执行
             int insert = (int) db.insert("shopcar_table", nullColumHack, values);
-            //db.close();
+            db.close();
             return insert;
         }else {
             //如果已经添加过了，就直接数量加一
@@ -94,7 +87,7 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
         //添加后数量加一
         values.put("product_count",shopcarinfo.getProduct_count()+1);
         int update = db.update("shopcar_table",values,"_id=?",new String[]{shop_id+""});
-        //db.close();
+        db.close();
         return update;
     }
 
@@ -111,7 +104,7 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
             //db.close();
             return update;
         }
-        //db.close();
+        db.close();
         return 0;
     }
 
@@ -159,7 +152,7 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
                 cursor.close();  // 确保 cursor 被关闭
             }
             if (db != null) {
-               // db.close();  // 确保数据库被关闭
+                db.close();  // 确保数据库被关闭
             }
         }
         return shopinfo;
@@ -200,7 +193,7 @@ public class ShopcarDbHelper extends SQLiteOpenHelper {
                 cursor.close();  // 确保 cursor 被关闭
             }
             if (db != null) {
-               //db.close();  // 确保数据库被关闭
+               db.close();  // 确保数据库被关闭
             }
         }
         return list;

@@ -1,24 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="655dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.OrderFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.appcompat.widget.Toolbar
+    tools:context=".fragment.OrderFragment"
+    android:background="@mipmap/img_1">
+    
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/huster">
+        android:orientation="vertical"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- TODO: Update blank fragment layout -->
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/Navigation_2"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:background="@color/huster">
 
-    </androidx.appcompat.widget.Toolbar>
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Navigation_2"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
+        </androidx.appcompat.widget.Toolbar>
+
+        <!-- res/layout/activity_checkout.xml -->
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_order_items"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/order_list"/>
+
+        </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

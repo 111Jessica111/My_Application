@@ -1,7 +1,6 @@
 package com.example.myapplication.fragment;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -17,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
-import com.example.myapplication.adapter.LeftListAdapter;
 import com.example.myapplication.adapter.ShopCarListAdapter;
+import com.example.myapplication.db.OrderDbHelper;
 import com.example.myapplication.db.ShopcarDbHelper;
 import com.example.myapplication.entity.Shopcarinfo;
 import com.example.myapplication.entity.Userinfo;
@@ -75,11 +74,23 @@ public class ShopcarFragment extends Fragment {
             }
         });
 
+
         //结算点击
         tv_sum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Userinfo userinfo = Userinfo.getUserinfo();
+                if (userinfo != null){
+                    List<Shopcarinfo> shoplist = ShopcarDbHelper.getInstance(getActivity()).shoplist(userinfo.getUsername());
+                    //批量生成订单
+                    OrderDbHelper.getInstance(getActivity()).payAll(shoplist,"韵苑5栋","15012345678");
 
+                    //清空
+                    for (int i = 0; i < shoplist.size();i++){
+                        ShopcarDbHelper.getInstance(getActivity()).delete(shoplist.get(i).getShop_id()+"");
+                    }
+                    refreshShopCar();
+                }
             }
         });
 
