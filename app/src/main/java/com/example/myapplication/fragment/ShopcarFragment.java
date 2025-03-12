@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.LeftListAdapter;
@@ -25,6 +26,8 @@ public class ShopcarFragment extends Fragment {
     private View rootView;
     private RecyclerView recycle_shop;
     private ShopCarListAdapter shopCarListAdapter;
+    private TextView tv_money_sum;
+    private TextView tv_sum;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +36,8 @@ public class ShopcarFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_shopcar, container, false);
 
         recycle_shop = rootView.findViewById(R.id.recycle_shop);
+        tv_money_sum = rootView.findViewById(R.id.tv_money_sum);
+        tv_sum = rootView.findViewById(R.id.tv_sum);
 
         // 设置布局管理器
         recycle_shop.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -63,6 +68,13 @@ public class ShopcarFragment extends Fragment {
             }
         });
 
+        //结算点击
+        tv_sum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         // 获取数据并显示
         refreshShopCar();
@@ -81,6 +93,18 @@ public class ShopcarFragment extends Fragment {
         if (userinfo != null){
             List<Shopcarinfo> shoplist = ShopcarDbHelper.getInstance(getActivity()).shoplist(userinfo.getUsername());
             shopCarListAdapter.setShopData(shoplist);
+            setCountSum(shoplist);
         }
+    }
+
+    private void setCountSum(List<Shopcarinfo> shopcarinfos){
+        int sum = 0;
+
+        //循环进行计算总价钱
+        for (int i = 0; i < shopcarinfos.size(); i++){
+            int money = shopcarinfos.get(i).getProduct_money()*shopcarinfos.get(i).getProduct_count() ;
+            sum = sum + money;
+        }
+        tv_money_sum.setText(sum+"");
     }
 }
