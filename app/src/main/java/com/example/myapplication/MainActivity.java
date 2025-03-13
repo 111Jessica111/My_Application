@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.add(R.id.fl_content,mShopcarFragment);
             }else {
                 fragmentTransaction.show(mShopcarFragment);
+                mShopcarFragment.refreshShopCar();
             }
         }
         else if (position == 2){
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.add(R.id.fl_content,mOrderFragment);
             }else {
                 fragmentTransaction.show(mOrderFragment);
+                mOrderFragment.refreshOrder();
             }
         }
         else {

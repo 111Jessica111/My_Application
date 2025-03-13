@@ -102,15 +102,8 @@ public class ShopcarFragment extends Fragment {
         refreshShopCar();
     }
 
-    // 每次返回到这个Fragment时刷新数据(很重要！！！！！！！！！,把我害惨了 :( )
-    @Override
-    public void onResume() {
-        super.onResume();
-        refreshShopCar();
-    }
-
     // 刷新购物车数据的方法
-    private void refreshShopCar() {
+    public void refreshShopCar() {
         Userinfo userinfo = Userinfo.getUserinfo();
         if (userinfo != null){
             List<Shopcarinfo> shoplist = ShopcarDbHelper.getInstance(getActivity()).shoplist(userinfo.getUsername());
