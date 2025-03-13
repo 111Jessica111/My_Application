@@ -1,7 +1,10 @@
 package com.example.myapplication.fragment;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,15 +90,40 @@ public class ShopcarFragment extends Fragment {
                 Userinfo userinfo = Userinfo.getUserinfo();
                 if (userinfo != null){
                     List<Shopcarinfo> shoplist = ShopcarDbHelper.getInstance(getActivity()).shoplist(userinfo.getUsername());
-                    //批量生成订单
-                    OrderDbHelper.getInstance(getActivity()).payAll(shoplist,"韵苑5栋","15012345678");
 
-                    //清空
-                    for (int i = 0; i < shoplist.size();i++){
-                        ShopcarDbHelper.getInstance(getActivity()).delete(shoplist.get(i).getShop_id()+"");
+                    if (shoplist.size()==0){
+
+                        Toast.makeText(getActivity(),"购物车空空的，快去把它装满吧~",Toast.LENGTH_SHORT).show();
+                    }else {
+
+                        Dialog dialog = new Dialog(getActivity());
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(
+                                Color.TRANSPARENT
+                        ));
+
+                        dialog.setContentView(R.layout.star_pay);
+                        dialog.show();
+
+                        RatingBar star = dialog.findViewById(R.id.star);
+                        Button btn_star = dialog.findViewById(R.id.btn_star);
+
+                        btn_star.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getActivity(),"快去查看你的订单吧~",Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                //批量生成订单
+                                OrderDbHelper.getInstance(getActivity()).payAll(shoplist,"韵苑5栋","15012345678");
+
+                                //清空
+                                for (int i = 0; i < shoplist.size();i++){
+                                    ShopcarDbHelper.getInstance(getActivity()).delete(shoplist.get(i).getShop_id()+"");
+                                }
+                                refreshShopCar();
+                            }
+                        });
+
                     }
-
-                    refreshShopCar();
                 }
             }
         });
