@@ -24,6 +24,13 @@
     <string name="sum">合计:</string>
     <string name="final_sum">结算</string>
 
+    <string name="page_1">嘿嘿！成功登录啦！</string>
+    <string name="page_2">开始你的探索吧！</string>
+    <string name="page_3">有什么不足尽管提出！</string>
+    <string name="page_4">快点击下一步，开始使用！</string>
+
+    <string name="skip">跳过</string>
+    <string name="next">下一步</string>
 
     <string name="book_0_title">书籍出售</string>
     <string name="book_0_money">5r/本</string>

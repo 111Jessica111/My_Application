@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                             //保存登录信息
                             Userinfo.setUserinfo(login);
                             //跳转
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, PageViewActivity.class);
                             startActivity(intent);
                         }else {
                             Toast.makeText(LoginActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
