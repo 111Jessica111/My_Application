@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import com.example.myapplication.entity.Userinfo;
 
 import java.util.List;
 
+
 public class ShopcarFragment extends Fragment {
 
     private View rootView;
@@ -31,6 +33,7 @@ public class ShopcarFragment extends Fragment {
     private ShopCarListAdapter shopCarListAdapter;
     private TextView tv_money_sum;
     private TextView tv_sum;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,6 +92,7 @@ public class ShopcarFragment extends Fragment {
                     for (int i = 0; i < shoplist.size();i++){
                         ShopcarDbHelper.getInstance(getActivity()).delete(shoplist.get(i).getShop_id()+"");
                     }
+
                     refreshShopCar();
                 }
             }
